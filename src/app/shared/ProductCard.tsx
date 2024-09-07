@@ -30,13 +30,12 @@ const ProductCard = ({
     localStorage.setItem("product", JSON.stringify(item));
   };
 
-  const handleLike = () => {
+  const handleLike = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    console.log(e);
     const data = getFromLocalStore("liked");
 
     if (isLiked) {
-      const filteredLiked = data.filter((element: ProductInterface) => {
-        return element.id !== item.id;
-      });
+      const filteredLiked = data.filter((element: ProductInterface) => element.id !== item.id);
       localStorage.setItem("liked", JSON.stringify(filteredLiked));
       setIsLiked(false);
     } else {
@@ -68,7 +67,7 @@ const ProductCard = ({
         </div>
       </a>
       <div
-        onClick={handleLike}
+        onClick={(e) => handleLike(e)}
         className={`cursor-pointer hover:scale-[1.1] absolute flex items-center right-1 bottom-1 ${
           isLiked ? "fill-black text-black" : "fill-none"
         }`}>

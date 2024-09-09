@@ -1,15 +1,23 @@
 "use client";
 
 import { getFromLocalStore } from "@/app/model/localStorageController";
-import React from "react";
+import { Html } from "next/document";
+import React, { createElement } from "react";
 
 const ProductDetails = () => {
   const data = getFromLocalStore("product");
 
+  const description = data.description;
   const imageID = data.imageID ? data.imageID : data.image_id;
   const imgURL = `https://www.artic.edu/iiif/2/${imageID}/full/843,/0/default.jpg`;
   const artist = data.artist_title;
   const title = data.title;
+
+  const htmlDecode = (value: any) => {
+    const e = document.createElement("div");
+    e.innerHTML = value;
+    return e.childNodes.length === 0 ? e : e.innerHTML;
+  };
 
   return (
     <div className='flex flex-col items-center min-h-screen bg-black text-white'>
@@ -22,10 +30,12 @@ const ProductDetails = () => {
       <div className='max-w-[90%] overflow-hidden mt-8 flex items-center justify-center p-2 border border-white'>
         <img src={imgURL} alt={title} className='bg-cover max-h-[70vh] ' />
       </div>
-
+      <div
+        className='text-sm font-extralight px-4 mt-8'
+        dangerouslySetInnerHTML={{ __html: htmlDecode(description) }}></div>
       <a
         href='/products'
-        className='group w-40 h-12 border border-white absolute bottom-[3vh] flex items-center justify-center text-xl font-normal tracking-widest hover:rounded-lg hover:bg-white hover:text-black transition-all duration-500'>
+        className='group mb-4 w-40 h-12 border border-white mt-12 flex items-center justify-center text-xl font-normal tracking-widest hover:rounded-lg hover:bg-white hover:text-black transition-all duration-500'>
         <p className='group-hover:translate-x-[-25%] transition-all duration-300'>BACK</p>
       </a>
     </div>

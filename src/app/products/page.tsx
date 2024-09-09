@@ -85,16 +85,22 @@ const ProductsList = () => {
   };
 
   const handleDelete = (item: {}) => {
+    if (state.length === 1) {
+      const data = getFromLocalStore("dataSet");
+      setState(data);
+      setIsMyWorkView(false);
+    }
+
     setState((prev) => {
       return prev.filter((elem) => elem !== item);
     });
   };
 
   const showLiked = () => {
-    if (!isLikedView) {
-      const data = getFromLocalStore("liked");
+    const data = getFromLocalStore("liked");
+    if (data.length === 0) return;
 
-      if (!data) return;
+    if (!isLikedView) {
       setState(data);
       setIsLikedView(true);
     } else {
@@ -105,15 +111,14 @@ const ProductsList = () => {
   };
 
   const showMyWokr = () => {
-    if (!isMyWorkView) {
-      const data = getFromLocalStore("ownWorks");
+    const data = getFromLocalStore("ownWorks");
+    if (data.length === 0) return;
 
-      if (!data) return;
+    if (!isMyWorkView) {
       setState(data);
       setIsMyWorkView(true);
     } else {
       const data = getFromLocalStore("dataSet");
-
       setState(data);
       setIsMyWorkView(false);
     }
@@ -130,7 +135,7 @@ const ProductsList = () => {
       ) : (
         <OnLoadingView />
       )}
-      <div className='flex items-center justify-center absolute gap-5 mt-4'>
+      <div className='flex items-center justify-center absolute gap-5 mt-4 scale-[0.8] sm:scale-100'>
         <div className='flex gap-1'>
           <Button text='Add' link='/addProduct' />
           <ButtonShowLiked clickHandler={showLiked} />

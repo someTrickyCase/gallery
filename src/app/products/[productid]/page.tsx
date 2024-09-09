@@ -1,8 +1,7 @@
 "use client";
 
 import { getFromLocalStore } from "@/app/model/localStorageController";
-import { Html } from "next/document";
-import React, { createElement } from "react";
+import React from "react";
 
 const ProductDetails = () => {
   const data = getFromLocalStore("product");

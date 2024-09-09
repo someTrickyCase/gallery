@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useRef } from "react";
 import { ProductInterface } from "../types/types";
-import { getFromLocalStore } from "../model/localStorageController";
 
 const ProductCard = ({
   item,

@@ -96,16 +96,28 @@ const ProductsList = () => {
     });
   };
 
+  const handleLike = (item: ProductInterface, action: "add" | "remove") => {
+    const data = getFromLocalStore("liked") ? getFromLocalStore("liked") : [];
+
+    if (action === "add") {
+      data.push(item);
+      localStorage.setItem("liked", JSON.stringify(data));
+    }
+    if (action === "remove") {
+      const filteredLiked = data.filter((element: ProductInterface) => element.id !== item.id);
+      localStorage.setItem("liked", JSON.stringify(filteredLiked));
+    }
+  };
+
   const showLiked = () => {
     const data = getFromLocalStore("liked");
-    if (data.length === 0) return;
 
     if (!isLikedView) {
-      setState(data);
+      if (!data || data.length === 0) return;
+      setState(getFromLocalStore("liked"));
       setIsLikedView(true);
     } else {
-      const data = getFromLocalStore("dataSet");
-      setState(data);
+      setState(getFromLocalStore("dataSet"));
       setIsLikedView(false);
     }
   };
@@ -129,7 +141,12 @@ const ProductsList = () => {
       {state.length > 0 ? (
         <div className='grid grid-cols-3 gap-1 sm:grid-cols-4 md:grid-cols-5 h-full mt-20'>
           {state.map((item: ProductInterface) => (
-            <ProductCard key={JSON.stringify(item)} item={item} deleteHandler={handleDelete} />
+            <ProductCard
+              key={JSON.stringify(item)}
+              item={item}
+              likeHandler={handleLike}
+              deleteHandler={handleDelete}
+            />
           ))}
         </div>
       ) : (

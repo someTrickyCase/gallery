@@ -6,9 +6,11 @@ import { getFromLocalStore } from "../model/localStorageController";
 const ProductCard = ({
   item,
   deleteHandler,
+  likeHandler,
 }: {
   item: ProductInterface;
   deleteHandler: Function;
+  likeHandler: Function;
 }) => {
   const [isLiked, setIsLiked] = useState(false);
 
@@ -31,15 +33,11 @@ const ProductCard = ({
   };
 
   const handleLike = () => {
-    const data = getFromLocalStore("liked");
-
     if (isLiked) {
-      const filteredLiked = data.filter((element: ProductInterface) => element.id !== item.id);
-      localStorage.setItem("liked", JSON.stringify(filteredLiked));
+      likeHandler(item, "remove");
       setIsLiked(false);
     } else {
-      data.push(item);
-      localStorage.setItem("liked", JSON.stringify(data));
+      likeHandler(item, "add");
       setIsLiked(true);
     }
   };
